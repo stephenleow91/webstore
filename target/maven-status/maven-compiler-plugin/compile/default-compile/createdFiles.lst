@@ -1,0 +1,3 @@
+com\packt\webstore\configuration\WebApplicationContextConfig.class
+com\packt\webstore\configuration\DispatcherServletInitializer.class
+com\packt\webstore\controller\HomeController.class
