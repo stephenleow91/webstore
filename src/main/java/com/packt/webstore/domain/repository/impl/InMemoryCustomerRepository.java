@@ -43,4 +43,19 @@ public class InMemoryCustomerRepository implements CustomerRepository {
 
 	}
 
+	@Override
+	public void addCustomer(Customer customer) {
+		String SQL = "INSERT INTO CUSTOMERS (CUSTOMER_ID, NAME, ADDRESS, NO_OF_ORDERS_MADE) "
+				+ "VALUES (:customerId, :name, :address, :noOfOrdersMade)";
+
+		Map<String, Object> params = new HashMap<>();
+		params.put("customerId", customer.getCustomerId());
+		params.put("name", customer.getName());
+		params.put("address", customer.getAddress());
+		params.put("noOfOrdersMade", customer.getNoOfOrdersMade());
+
+		jdbcTemplate.update(SQL, params);
+
+	}
+
 }
