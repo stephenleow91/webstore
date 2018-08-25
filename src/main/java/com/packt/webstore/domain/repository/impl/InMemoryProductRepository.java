@@ -2,6 +2,7 @@ package com.packt.webstore.domain.repository.impl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,46 @@ public class InMemoryProductRepository implements ProductRepository {
 		params.put("unitsInStock", noOfUnits);
 		params.put("id", productId);
 		jdbcTemplate.update(SQL, params);
+	}
+
+	@Override
+	public List<Product> getProductsByCategory(String category) {
+		Map<String, Object> params = new HashMap<>();
+		params.put("category", category);
+		List<Product> result = jdbcTemplate.query("SELECT * FROM products WHERE CATEGORY = :category", params,
+				new ProductMapper());
+		return result;
+	}
+
+	@Override
+	public List<Product> getProductsByFilter(Map<String, List<String>> filterParams) {
+		String SQL = "SELECT * FROM products WHERE CATEGORY in ( :categories ) AND MANUFACTURER IN ( :brands )";
+		return jdbcTemplate.query(SQL, filterParams, new ProductMapper());
+	}
+
+	@Override
+	public Product getProductById(String productId) {
+		String SQL = "SELECT * FROM products WHERE ID = :productId";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("productId", productId);
+		return jdbcTemplate.queryForObject(SQL, params, new ProductMapper());
+	}
+
+	@Override
+	public Product getProductsByCategoryPriceBrand(String category, Map<String, List<String>> filterParams,
+			String brand) {
+
+		List<String> categoryList = new ArrayList<>();
+		categoryList.add(category);
+
+		List<String> brandList = new ArrayList<>();
+		brandList.add(brand);
+
+		filterParams.put("category", categoryList);
+		filterParams.put("brand", brandList);
+
+		String SQL = "SELECT * FROM products WHERE CATEGORY = :category AND (UNIT_PRICE >= :low AND UNIT_PRICE <= :high) AND MANUFACTURER = :brand";
+		return jdbcTemplate.queryForObject(SQL, filterParams, new ProductMapper());
 	}
 
 }
