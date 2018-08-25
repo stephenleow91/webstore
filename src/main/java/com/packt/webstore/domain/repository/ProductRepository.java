@@ -20,4 +20,6 @@ public interface ProductRepository {
 
 	void updateStock(String productId, long noOfUnits);
 
+	void addProduct(Product product);
+
 }

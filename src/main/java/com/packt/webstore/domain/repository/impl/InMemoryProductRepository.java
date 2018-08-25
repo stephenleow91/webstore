@@ -43,7 +43,7 @@ public class InMemoryProductRepository implements ProductRepository {
 			product.setCondition(rs.getString("CONDITION"));
 			product.setUnitsInStock(rs.getLong("UNITS_IN_STOCK"));
 			product.setUnitsInOrder(rs.getLong("UNITS_IN_ORDER"));
-			product.setDiscountinued(rs.getBoolean("DISCONTINUED"));
+			product.setDiscontinued(rs.getBoolean("DISCONTINUED"));
 
 			return product;
 		}
@@ -97,6 +97,26 @@ public class InMemoryProductRepository implements ProductRepository {
 
 		String SQL = "SELECT * FROM products WHERE CATEGORY = :category AND (UNIT_PRICE >= :low AND UNIT_PRICE <= :high) AND MANUFACTURER = :brand";
 		return jdbcTemplate.queryForObject(SQL, filterParams, new ProductMapper());
+	}
+
+	@Override
+	public void addProduct(Product product) {
+		String SQL = "INSERT INTO PRODUCTS (ID, NAME, DESCRIPTION, UNIT_PRICE, MANUFACTURER, CATEGORY, CONDITION, UNITS_IN_STOCK, UNITS_IN_ORDER, DISCONTINUED) "
+				+ "VALUES (:id, :name, :desc, :price, :manufacturer, :category, :condition, :inStock, :inOrder, :discontinued)";
+
+		Map<String, Object> params = new HashMap<>();
+		params.put("id", product.getProductId());
+		params.put("name", product.getName());
+		params.put("desc", product.getDescription());
+		params.put("price", product.getUnitPrice());
+		params.put("manufacturer", product.getManufacturer());
+		params.put("category", product.getCategory());
+		params.put("condition", product.getCondition());
+		params.put("inStock", product.getUnitsInStock());
+		params.put("inOrder", product.getUnitsInOrder());
+		params.put("discontinued", product.isDiscontinued());
+
+		jdbcTemplate.update(SQL, params);
 	}
 
 }

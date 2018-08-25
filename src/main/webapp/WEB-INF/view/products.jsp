@@ -32,9 +32,8 @@
 							<p>${product.unitPrice} USD</p>
 							<p>${product.unitsInStock} units in stock</p>
 							<p>
-								<a href="<spring:url value="/market/product?id=${product.productId}" htmlEscape="true"/>"
-									class="btn btn-primary">
-								<span class="glyphicon-info-sign glyphicon"></span> Details
+								<a href="<spring:url value="/market/product?id=${product.productId}" htmlEscape="true"/>" class="btn btn-primary">
+									<span class="glyphicon-info-sign glyphicon"></span> Details
 								</a>
 							</p>
 						</div>

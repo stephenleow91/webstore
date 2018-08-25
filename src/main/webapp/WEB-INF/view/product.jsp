@@ -41,14 +41,13 @@
 							<strong>Available units in stock </strong> :
 							${product.unitsInStock}
 						</p>
-						<h4>${product.unitPrice}USD</h4>
+						<h4>${product.unitPrice} USD</h4>
 						<p>
-							<a href="<spring:url value="/market/products"/>"
-								class="btn btn-default"> <span
-								class="glyphicon-hand-left glyphicon"></span> back
+							<a href="<spring:url value="/market/products"/>" class="btn btn-default"> 
+								<span class="glyphicon-hand-left glyphicon"></span> back
 							</a> 
-							<a href="#" class="btn btn-warning btn-large"> <span
-								class="glyphicon-shopping-cart glyphicon"></span> Order Now
+							<a href="#" class="btn btn-warning btn-large"> 
+								<span class="glyphicon-shopping-cart glyphicon"></span> Order Now
 							</a>
 						</p>
 					</div>
