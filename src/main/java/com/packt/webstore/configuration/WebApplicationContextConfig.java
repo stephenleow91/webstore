@@ -7,9 +7,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -41,6 +43,13 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
 		logger.info("configureDefaultServletHandling");
 
 		configurer.enable("ErrorHandlingServlet");
+	}
+
+	@Bean
+	public MessageSource messageSource() {
+		ResourceBundleMessageSource resource = new ResourceBundleMessageSource();
+		resource.setBasename("messages");
+		return resource;
 	}
 
 	@Bean

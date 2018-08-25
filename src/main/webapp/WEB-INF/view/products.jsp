@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,7 +9,7 @@
 <meta http-equiv="x-UA-Compatible" content="IE=edge">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <meta name="viewport" content="width=divce-width, initial-scale=1">
-<title>Products</title>
+<title><spring:message code="products.title"/></title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 </head>
@@ -16,8 +17,8 @@
 <body>
 	<section>
 		<div class="jumbotron">
-			<h1>Products</h1>
-			<p>All the available products in our store</p>
+			<h1><spring:message code="products.section.top.h1"/></h1>
+			<p><spring:message code="products.section.top.p"/></p>
 		</div>
 	</section>
 
@@ -29,11 +30,11 @@
 						<div class="caption">
 							<h3>${product.name}</h3>
 							<p>${product.description}</p>
-							<p>${product.unitPrice} USD</p>
-							<p>${product.unitsInStock} units in stock</p>
+							<p>${product.unitPrice} <spring:message code="products.currency.usd"/></p>
+							<p>${product.unitsInStock} <spring:message code="products.unitsInStock"/></p>
 							<p>
 								<a href="<spring:url value="/market/product?id=${product.productId}" htmlEscape="true"/>" class="btn btn-primary">
-									<span class="glyphicon-info-sign glyphicon"></span> Details
+									<span class="glyphicon-info-sign glyphicon"></span> <spring:message code="products.details"/>
 								</a>
 							</p>
 						</div>

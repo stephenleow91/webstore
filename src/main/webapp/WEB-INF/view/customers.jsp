@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +8,7 @@
 <meta http-equiv="x-UA-Compatible" content="IE=edge">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <meta name="viewport" content="width=divce-width, initial-scale=1">
-<title>Customers</title>
+<title><spring:message code="customers.title"/></title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 </head>
@@ -15,8 +16,8 @@
 <body>
 	<section>
 		<div class="jumbotron">
-			<h1>Customers</h1>
-			<p>All the customers in our store</p>
+			<h1><spring:message code="customers.section.top.h1"/></h1>
+			<p><spring:message code="customers.section.top.p"/></p>
 		</div>
 	</section>
 
@@ -26,10 +27,10 @@
 				<div class="col-sm-6 col-md-3" style="padding-bottom: 15px">
 					<div class="thumbnail">
 						<div class="caption">
-							<h3>Customer name : ${customer.name}</h3>
-							<p>Customer id : ${customer.customerId}</p>
-							<p>Customer address : ${customer.address}</p>
-							<p>Number of orders made : ${customer.noOfOrdersMade}</p>
+							<h3><spring:message code="customers.details.customerName"/> : ${customer.name}</h3>
+							<p><spring:message code="customers.details.customerId"/> : ${customer.customerId}</p>
+							<p><spring:message code="customers.details.customerAddress"/> : ${customer.address}</p>
+							<p><spring:message code="customers.details.numberOfOrdersMade"/> : ${customer.noOfOrdersMade}</p>
 						</div>
 					</div>
 				</div>

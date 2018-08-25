@@ -8,7 +8,7 @@
 <meta http-equiv="x-UA-Compatible" content="IE=edge">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <meta name="viewport" content="width=divce-width, initial-scale=1">
-<title>Products</title>
+<title><spring:message code="product.title"/></title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 </head>
@@ -16,8 +16,8 @@
 <body>
 	<section>
 		<div class="jumbotron">
-			<h1>Products</h1>
-			<p>All the available products in our store</p>
+			<h1><spring:message code="product.section.top.h1"/></h1>
+			<p><spring:message code="product.section.top.p"/></p>
 		</div>
 	</section>
 
@@ -29,25 +29,25 @@
 						<h3>${product.name}</h3>
 						<p>${product.description}</p>
 						<p>
-							<strong>Item Code : </strong> <span class="label label-warning">${product.productId}</span>
+							<strong><spring:message code="product.itemCode"/> : </strong> <span class="label label-warning">${product.productId}</span>
 						</p>
 						<p>
-							<strong>manufacturer </strong> : ${product.manufacturer}
+							<strong><spring:message code="product.manufacturer"/> </strong> : ${product.manufacturer}
 						</p>
 						<p>
-							<strong>category </strong> : ${product.category}
+							<strong><spring:message code="product.category"/> </strong> : ${product.category}
 						</p>
 						<p>
-							<strong>Available units in stock </strong> :
+							<strong><spring:message code="product.availableUnitsInStock"/> </strong> :
 							${product.unitsInStock}
 						</p>
-						<h4>${product.unitPrice} USD</h4>
+						<h4>${product.unitPrice} <spring:message code="product.currency.usd"/></h4>
 						<p>
 							<a href="<spring:url value="/market/products"/>" class="btn btn-default"> 
-								<span class="glyphicon-hand-left glyphicon"></span> back
+								<span class="glyphicon-hand-left glyphicon"></span> <spring:message code="product.back"/>
 							</a> 
 							<a href="#" class="btn btn-warning btn-large"> 
-								<span class="glyphicon-shopping-cart glyphicon"></span> Order Now
+								<span class="glyphicon-shopping-cart glyphicon"></span> <spring:message code="product.orderNow"/>
 							</a>
 						</p>
 					</div>
