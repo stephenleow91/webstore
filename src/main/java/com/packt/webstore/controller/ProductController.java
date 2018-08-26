@@ -1,12 +1,15 @@
 package com.packt.webstore.controller;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,10 +144,22 @@ public class ProductController {
 	}
 
 	@RequestMapping("/product")
-	public String getProductById(Model model, @RequestParam("id") String productId) {
+	public String getProductById(Model model, @RequestParam("id") String productId, HttpServletRequest request) throws Exception {
 		logger.info("getProductById");
 
-		model.addAttribute("product", productService.getProductById(productId));
+		Product product = productService.getProductById(productId);
+
+		File productImage = new File(request.getSession().getServletContext().getRealPath("/") + "resources\\images\\" + product.getProductId() + ".jpg");
+		File productUserManual = new File(request.getSession().getServletContext().getRealPath("/") + "resources\\pdf\\" + product.getProductId() + ".pdf");
+
+	    byte[] encodedProductImage = Base64.getEncoder().encode(FileUtils.readFileToByteArray(productImage));
+	    product.setBase64ProductImage(new String(encodedProductImage, StandardCharsets.UTF_8));
+
+
+	    byte[] encodedProductUserManual = Base64.getEncoder().encode(FileUtils.readFileToByteArray(productUserManual));
+	    product.setBase64ProductUserManual(new String(encodedProductUserManual, StandardCharsets.UTF_8));
+
+		model.addAttribute("product", product);
 
 		return "product";
 	}
