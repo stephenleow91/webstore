@@ -2,6 +2,7 @@ package com.packt.webstore.configuration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,8 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -21,6 +24,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
@@ -30,6 +35,8 @@ import org.springframework.web.util.UrlPathHelper;
 
 import com.packt.webstore.domain.Product;
 import com.packt.webstore.interceptor.ProcessingTimeLogInterceptor;
+import com.packt.webstore.interceptor.PromoCodeInterceptor;
+import com.packt.webstore.interceptor.RequestMappingInterceptor;
 
 @Configuration
 @EnableWebMvc
@@ -44,6 +51,12 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
 		logger.info("addInterceptors");
 
 		registry.addInterceptor(new ProcessingTimeLogInterceptor());
+
+		LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+		localeChangeInterceptor.setParamName("language");
+		registry.addInterceptor(localeChangeInterceptor);
+		registry.addInterceptor(promoCodeInterceptor()).addPathPatterns("/**/market/products/specialOffer");
+		// registry.addInterceptor(initRequestMappingInterceptor()).addPathPatterns("/**");
 	}
 
 	@Override
@@ -69,6 +82,33 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
 		logger.info("configureDefaultServletHandling");
 
 		configurer.enable("ErrorHandlingServlet");
+	}
+
+	@Bean
+	public HandlerInterceptor initRequestMappingInterceptor() {
+		logger.info("initRequestMappingInterceptor");
+
+		RequestMappingInterceptor requestMappingInterceptor = new RequestMappingInterceptor();
+		requestMappingInterceptor.setErrorRedirect("errorPage");
+		return requestMappingInterceptor;
+	}
+
+	@Bean
+	public HandlerInterceptor promoCodeInterceptor() {
+		logger.info("promoCodeInterceptor");
+
+		PromoCodeInterceptor promoCodeInterceptor = new PromoCodeInterceptor();
+		promoCodeInterceptor.setPromoCode("OFF3R");
+		promoCodeInterceptor.setOfferRedirect("market/products");
+		promoCodeInterceptor.setErrorRedirect("invalidPromoCode");
+		return promoCodeInterceptor;
+	}
+
+	@Bean
+	public LocaleResolver localeResolver() {
+		SessionLocaleResolver resolver = new SessionLocaleResolver();
+		resolver.setDefaultLocale(new Locale("en"));
+		return resolver;
 	}
 
 	@Bean

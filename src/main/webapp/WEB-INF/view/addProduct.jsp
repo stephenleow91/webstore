@@ -16,6 +16,12 @@
 
 <body>
 	<section>
+		<div class="pull-right" style="padding-right:50px">
+			<a href="?language=en">English</a>|<a href="?language=nl">Dutch</a>
+		</div>
+	</section>
+	
+	<section>
 		<div class="jumbotron">
 			<h1><spring:message code="addProduct.section.top.h1"/></h1>
 			<p><spring:message code="addProduct.section.top.p"/></p>
