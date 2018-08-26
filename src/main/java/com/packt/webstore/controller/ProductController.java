@@ -1,7 +1,11 @@
 package com.packt.webstore.controller;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.packt.webstore.domain.Product;
@@ -35,7 +40,7 @@ public class ProductController {
 	@InitBinder
 	public void initialiseBinder(WebDataBinder binder) {
 		binder.setAllowedFields("productId", "name", "unitPrice", "description", "manufacturer", "category",
-				"unitsInStock", "condition");
+				"unitsInStock", "condition", "productImage", "productUserManual");
 	}
 
 	@RequestMapping(value = "/products/add", method = RequestMethod.GET)
@@ -48,7 +53,7 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = "/products/add", method = RequestMethod.POST)
-	public String processAddNewProductForm(@ModelAttribute("newProduct") Product newProduct, BindingResult result) {
+	public String processAddNewProductForm(@ModelAttribute("newProduct") Product newProduct, BindingResult result, HttpServletRequest request) {
 		logger.info("processAddNewProductForm");
 
 		String[] suppressedFields = result.getSuppressedFields();
@@ -56,6 +61,26 @@ public class ProductController {
 		if (suppressedFields.length > 0) {
 			throw new RuntimeException("Attemting to bind disallowrd fields : "
 					+ StringUtils.arrayToCommaDelimitedString(suppressedFields));
+		}
+
+		Optional<MultipartFile> productImage = Optional.ofNullable(newProduct.getProductImage());
+		Optional<MultipartFile> productUserManual = Optional.ofNullable(newProduct.getProductUserManual());
+		String rootDirectory = request.getSession().getServletContext().getRealPath("/");
+
+		if (productImage.isPresent()) {
+			try {
+				productImage.get().transferTo(new File(rootDirectory + "resources\\images\\" + newProduct.getProductId() + ".jpg"));
+			}catch(Exception e) {
+				throw new RuntimeException("Product Image saving failed", e);
+			}
+		}
+
+		if (productUserManual.isPresent()) {
+			try {
+				productUserManual.get().transferTo(new File(rootDirectory + "resources\\pdf\\" + newProduct.getProductId() + ".pdf"));
+			}catch(Exception e) {
+				throw new RuntimeException("Product User Manual saving failed", e);
+			}
 		}
 
 		productService.addProduct(newProduct);
