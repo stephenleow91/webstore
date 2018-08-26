@@ -3,9 +3,6 @@ package com.packt.webstore.configuration;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -16,8 +13,6 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.HandlerExceptionResolver;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
@@ -57,12 +52,13 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
 		configurer.setUrlPathHelper(urlPathHelper);
 	}
 
-	@Override
-	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-		logger.info("configureDefaultServletHandling");
+	 @Override
+	 public void configureDefaultServletHandling(DefaultServletHandlerConfigurer
+	 configurer) {
+	 logger.info("configureDefaultServletHandling");
 
-		configurer.enable("ErrorHandlingServlet");
-	}
+	 configurer.enable("ErrorHandlingServlet");
+	 }
 
 	@Bean
 	public ViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager) {
@@ -127,21 +123,21 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
 		return resolver;
 	}
 
-	@Override
-	public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> handler) {
-		logger.info("configureHandlerExceptionResolvers");
-
-		HandlerExceptionResolver resolver = new HandlerExceptionResolver() {
-
-			@Override
-			public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response,
-					Object handler, Exception ex) {
-				return new ModelAndView("errorPage");
-			}
-
-		};
-
-		handler.add(resolver);
-	}
+//	@Override
+//	public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> handler) {
+//		logger.info("configureHandlerExceptionResolvers");
+//
+//		HandlerExceptionResolver resolver = new HandlerExceptionResolver() {
+//
+//			@Override
+//			public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response,
+//					Object handler, Exception ex) {
+//				return new ModelAndView("errorPage");
+//			}
+//
+//		};
+//
+//		handler.add(resolver);
+//	}
 
 }

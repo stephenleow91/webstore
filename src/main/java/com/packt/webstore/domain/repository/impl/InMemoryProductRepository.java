@@ -8,12 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.packt.webstore.domain.Product;
 import com.packt.webstore.domain.repository.ProductRepository;
+import com.packt.webstore.exception.ProductNotFoundException;
 
 @Repository
 public class InMemoryProductRepository implements ProductRepository {
@@ -79,7 +81,13 @@ public class InMemoryProductRepository implements ProductRepository {
 		String SQL = "SELECT * FROM products WHERE ID = :productId";
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("productId", productId);
-		return jdbcTemplate.queryForObject(SQL, params, new ProductMapper());
+
+		try {
+			return jdbcTemplate.queryForObject(SQL, params, new ProductMapper());
+
+		}catch(DataAccessException e) {
+			throw new ProductNotFoundException(productId);
+		}
 	}
 
 	@Override
