@@ -17,6 +17,7 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -28,6 +29,7 @@ import org.springframework.web.servlet.view.xml.MarshallingView;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.packt.webstore.domain.Product;
+import com.packt.webstore.interceptor.ProcessingTimeLogInterceptor;
 
 @Configuration
 @EnableWebMvc
@@ -36,8 +38,18 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
 
 	private static final Logger logger = LoggerFactory.getLogger(WebApplicationContextConfig.class);
 
+	// in controller level put in interceptor
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		logger.info("addInterceptors");
+
+		registry.addInterceptor(new ProcessingTimeLogInterceptor());
+	}
+
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		logger.info("addResourceHandlers");
+
 		registry.addResourceHandler("/img/**").addResourceLocations("/resources/images/");
 		registry.addResourceHandler("/pdf/**").addResourceLocations("/resources/pdf/");
 	}
@@ -52,13 +64,12 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
 		configurer.setUrlPathHelper(urlPathHelper);
 	}
 
-	 @Override
-	 public void configureDefaultServletHandling(DefaultServletHandlerConfigurer
-	 configurer) {
-	 logger.info("configureDefaultServletHandling");
+	@Override
+	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
+		logger.info("configureDefaultServletHandling");
 
-	 configurer.enable("ErrorHandlingServlet");
-	 }
+		configurer.enable("ErrorHandlingServlet");
+	}
 
 	@Bean
 	public ViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager) {
@@ -123,21 +134,23 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
 		return resolver;
 	}
 
-//	@Override
-//	public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> handler) {
-//		logger.info("configureHandlerExceptionResolvers");
-//
-//		HandlerExceptionResolver resolver = new HandlerExceptionResolver() {
-//
-//			@Override
-//			public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response,
-//					Object handler, Exception ex) {
-//				return new ModelAndView("errorPage");
-//			}
-//
-//		};
-//
-//		handler.add(resolver);
-//	}
+	// @Override
+	// public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver>
+	// handler) {
+	// logger.info("configureHandlerExceptionResolvers");
+	//
+	// HandlerExceptionResolver resolver = new HandlerExceptionResolver() {
+	//
+	// @Override
+	// public ModelAndView resolveException(HttpServletRequest request,
+	// HttpServletResponse response,
+	// Object handler, Exception ex) {
+	// return new ModelAndView("errorPage");
+	// }
+	//
+	// };
+	//
+	// handler.add(resolver);
+	// }
 
 }
