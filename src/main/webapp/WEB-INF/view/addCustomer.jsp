@@ -16,6 +16,11 @@
 
 <body>
 	<section>
+		<div class="pull-right" style="padding-right:50px">
+			<a href="<c:url value="/logout"/>">Logout</a>
+		</div>
+	</section>
+	<section>
 		<div class="jumbotron">
 			<h1><spring:message code="addCustomer.section.top.h1"/></h1>
 			<p><spring:message code="addCustomer.section.top.p"/></p>
