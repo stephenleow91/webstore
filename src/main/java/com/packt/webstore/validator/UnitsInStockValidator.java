@@ -1,28 +1,28 @@
 package com.packt.webstore.validator;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import java.math.BigDecimal;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
-public class UnitsInStockValidator implements ConstraintValidator<UnitsInStock, Long> {
+import com.packt.webstore.domain.Product;
 
-	private static final Logger logger = LoggerFactory.getLogger(UnitsInStockValidator.class);
+@Component
+public class UnitsInStockValidator implements Validator {
 
 	@Override
-	public boolean isValid(Long value, ConstraintValidatorContext context) {
-		logger.info("isValid");
+	public boolean supports(Class<?> clazz) {
+		return Product.class.isAssignableFrom(clazz);
+	}
 
-		if (value == null) {
-			return false;
+	@Override
+	public void validate(Object target, Errors errors) {
+		Product product = (Product) target;
+
+		if(product.getUnitPrice() != null && new BigDecimal(1000).compareTo(product.getUnitPrice()) <= 0 && product.getUnitsInStock() > 99) {
+			errors.rejectValue("unitsInStock", "com.packt.webstore.validator.UnitsInStockValidator.message");
 		}
-
-		if (value.compareTo(-1L) <= 0) {
-			return false;
-		}
-
-		return true;
 	}
 
 }

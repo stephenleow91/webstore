@@ -17,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.packt.webstore.validator.Category;
 import com.packt.webstore.validator.ProductId;
-import com.packt.webstore.validator.UnitsInStock;
 
 @XmlRootElement
 public class Product implements Serializable {
@@ -46,8 +45,7 @@ public class Product implements Serializable {
 	@Category
 	private String category;
 
-	// @Min(value=0, message="{Min.Product.unitInStock.validation}")
-	@UnitsInStock
+	@Min(value = 0, message = "{Min.Product.unitInStock.validation}")
 	private long unitsInStock;
 
 	private long unitsInOrder;

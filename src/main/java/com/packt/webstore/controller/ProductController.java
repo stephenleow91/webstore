@@ -34,6 +34,7 @@ import com.packt.webstore.domain.Product;
 import com.packt.webstore.exception.NoProductsFoundUnderCategoryException;
 import com.packt.webstore.exception.ProductNotFoundException;
 import com.packt.webstore.service.ProductService;
+import com.packt.webstore.validator.UnitsInStockValidator;
 
 @Controller
 @RequestMapping("/market")
@@ -44,10 +45,14 @@ public class ProductController {
 	@Autowired
 	private ProductService productService;
 
+	@Autowired
+	private UnitsInStockValidator unitsInStockValidator;
+
 	@InitBinder
 	public void initialiseBinder(WebDataBinder binder) {
 		binder.setAllowedFields("productId", "name", "unitPrice", "description", "manufacturer", "category",
 				"unitsInStock", "condition", "productImage", "productUserManual", "language");
+		binder.setValidator(unitsInStockValidator);
 	}
 
 	@RequestMapping("/products/invalidPromoCode")
@@ -60,7 +65,7 @@ public class ProductController {
 		logger.info("handleProductNotFoundException");
 
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("invalidProductId",exception.getProductId());
+		mav.addObject("invalidProductId", exception.getProductId());
 		mav.addObject("exception", exception);
 		mav.addObject("url", request.getRequestURL() + "?" + request.getQueryString());
 		mav.setViewName("productNotFound");
@@ -77,10 +82,11 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = "/products/add", method = RequestMethod.POST)
-	public String processAddNewProductForm(@ModelAttribute("newProduct") @Valid Product newProduct, BindingResult result, HttpServletRequest request) {
+	public String processAddNewProductForm(@ModelAttribute("newProduct") @Valid Product newProduct,
+			BindingResult result, HttpServletRequest request) {
 		logger.info("processAddNewProductForm");
 
-		if(result.hasErrors()) {
+		if (result.hasErrors()) {
 			return "addProduct";
 		}
 
@@ -97,16 +103,18 @@ public class ProductController {
 
 		if (productImage.isPresent()) {
 			try {
-				productImage.get().transferTo(new File(rootDirectory + "resources\\images\\" + newProduct.getProductId() + ".jpg"));
-			}catch(Exception e) {
+				productImage.get().transferTo(
+						new File(rootDirectory + "resources\\images\\" + newProduct.getProductId() + ".jpg"));
+			} catch (Exception e) {
 				throw new RuntimeException("Product Image saving failed", e);
 			}
 		}
 
 		if (productUserManual.isPresent()) {
 			try {
-				productUserManual.get().transferTo(new File(rootDirectory + "resources\\pdf\\" + newProduct.getProductId() + ".pdf"));
-			}catch(Exception e) {
+				productUserManual.get()
+						.transferTo(new File(rootDirectory + "resources\\pdf\\" + newProduct.getProductId() + ".pdf"));
+			} catch (Exception e) {
 				throw new RuntimeException("Product User Manual saving failed", e);
 			}
 		}
@@ -145,7 +153,7 @@ public class ProductController {
 
 		Optional<List<Product>> productList = Optional.of(productService.getProductsByCategory(productCategory));
 
-		if(productList.get().size() < 1) {
+		if (productList.get().size() < 1) {
 			throw new NoProductsFoundUnderCategoryException();
 		}
 
@@ -175,20 +183,22 @@ public class ProductController {
 	}
 
 	@RequestMapping("/product")
-	public String getProductById(Model model, @RequestParam("id") String productId, HttpServletRequest request) throws Exception {
+	public String getProductById(Model model, @RequestParam("id") String productId, HttpServletRequest request)
+			throws Exception {
 		logger.info("getProductById");
 
 		Product product = productService.getProductById(productId);
 
-		File productImage = new File(request.getSession().getServletContext().getRealPath("/") + "resources\\images\\" + product.getProductId() + ".jpg");
-		File productUserManual = new File(request.getSession().getServletContext().getRealPath("/") + "resources\\pdf\\" + product.getProductId() + ".pdf");
+		File productImage = new File(request.getSession().getServletContext().getRealPath("/") + "resources\\images\\"
+				+ product.getProductId() + ".jpg");
+		File productUserManual = new File(request.getSession().getServletContext().getRealPath("/") + "resources\\pdf\\"
+				+ product.getProductId() + ".pdf");
 
-	    byte[] encodedProductImage = Base64.getEncoder().encode(FileUtils.readFileToByteArray(productImage));
-	    product.setBase64ProductImage(new String(encodedProductImage, StandardCharsets.UTF_8));
+		byte[] encodedProductImage = Base64.getEncoder().encode(FileUtils.readFileToByteArray(productImage));
+		product.setBase64ProductImage(new String(encodedProductImage, StandardCharsets.UTF_8));
 
-
-	    byte[] encodedProductUserManual = Base64.getEncoder().encode(FileUtils.readFileToByteArray(productUserManual));
-	    product.setBase64ProductUserManual(new String(encodedProductUserManual, StandardCharsets.UTF_8));
+		byte[] encodedProductUserManual = Base64.getEncoder().encode(FileUtils.readFileToByteArray(productUserManual));
+		product.setBase64ProductUserManual(new String(encodedProductUserManual, StandardCharsets.UTF_8));
 
 		model.addAttribute("product", product);
 
