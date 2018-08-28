@@ -41,6 +41,7 @@ import com.packt.webstore.domain.Product;
 import com.packt.webstore.interceptor.ProcessingTimeLogInterceptor;
 import com.packt.webstore.interceptor.PromoCodeInterceptor;
 import com.packt.webstore.interceptor.RequestMappingInterceptor;
+import com.packt.webstore.validator.ProductImageValidator;
 import com.packt.webstore.validator.ProductValidator;
 import com.packt.webstore.validator.UnitsInStockValidator;
 
@@ -99,6 +100,7 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
 	public ProductValidator productValidator() {
 		Set<Validator> springValidators = new HashSet<>();
 		springValidators.add(new UnitsInStockValidator());
+		springValidators.add(new ProductImageValidator());
 
 		ProductValidator productValidator = new ProductValidator();
 		productValidator.setSpringValidators(springValidators);
@@ -178,7 +180,7 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
 
 		CommonsMultipartResolver resolver = new CommonsMultipartResolver();
 		resolver.setDefaultEncoding("utf-8");
-		resolver.setMaxUploadSize(10240000);
+		// resolver.setMaxUploadSize(10240000);
 		return resolver;
 	}
 

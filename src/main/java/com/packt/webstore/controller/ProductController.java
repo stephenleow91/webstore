@@ -50,9 +50,9 @@ public class ProductController {
 
 	@InitBinder
 	public void initialiseBinder(WebDataBinder binder) {
+		binder.setValidator(productValidator);
 		binder.setAllowedFields("productId", "name", "unitPrice", "description", "manufacturer", "category",
 				"unitsInStock", "condition", "productImage", "productUserManual", "language");
-		binder.setValidator(productValidator);
 	}
 
 	@RequestMapping("/products/invalidPromoCode")
