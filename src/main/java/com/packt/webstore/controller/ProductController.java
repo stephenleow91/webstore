@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -76,8 +77,12 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = "/products/add", method = RequestMethod.POST)
-	public String processAddNewProductForm(@ModelAttribute("newProduct") Product newProduct, BindingResult result, HttpServletRequest request) {
+	public String processAddNewProductForm(@ModelAttribute("newProduct") @Valid Product newProduct, BindingResult result, HttpServletRequest request) {
 		logger.info("processAddNewProductForm");
+
+		if(result.hasErrors()) {
+			return "addProduct";
+		}
 
 		String[] suppressedFields = result.getSuppressedFields();
 
