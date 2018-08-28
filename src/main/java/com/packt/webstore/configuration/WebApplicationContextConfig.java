@@ -1,8 +1,10 @@
 package com.packt.webstore.configuration;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +41,8 @@ import com.packt.webstore.domain.Product;
 import com.packt.webstore.interceptor.ProcessingTimeLogInterceptor;
 import com.packt.webstore.interceptor.PromoCodeInterceptor;
 import com.packt.webstore.interceptor.RequestMappingInterceptor;
+import com.packt.webstore.validator.ProductValidator;
+import com.packt.webstore.validator.UnitsInStockValidator;
 
 @Configuration
 @EnableWebMvc
@@ -89,6 +93,17 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
 		logger.info("configureDefaultServletHandling");
 
 		configurer.enable("ErrorHandlingServlet");
+	}
+
+	@Bean
+	public ProductValidator productValidator() {
+		Set<Validator> springValidators = new HashSet<>();
+		springValidators.add(new UnitsInStockValidator());
+
+		ProductValidator productValidator = new ProductValidator();
+		productValidator.setSpringValidators(springValidators);
+
+		return productValidator;
 	}
 
 	@Bean
