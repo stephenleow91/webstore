@@ -8,9 +8,11 @@
 <meta http-equiv="x-UA-Compatible" content="IE=edge">
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <meta name="viewport" content="width=divce-width, initial-scale=1">
+
 <title><spring:message code="product.title"/></title>
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
 </head>
 
 <body>
@@ -26,7 +28,7 @@
 		</div>
 	</section>
 
-	<section class="container">
+	<section class="container" ng-app="cartApp">
 		<div class="row">
 			<div class="col-md-4">
 				<img src="<c:url value="/img/${product.productId}.jpg"/>" alt="image" style="width:300px; height:350px"/>
@@ -50,12 +52,15 @@
 							${product.unitsInStock}
 						</p>
 						<h4>${product.unitPrice} <spring:message code="product.currency.usd"/></h4>
-						<p>
+						<p ng-controller="cartCtrl">
 							<a href="<spring:url value="/market/products"/>" class="btn btn-default"> 
 								<span class="glyphicon-hand-left glyphicon"></span> <spring:message code="product.back"/>
 							</a> 
-							<a href="#" class="btn btn-warning btn-large"> 
+							<a href="#" class="btn btn-warning btn-large" ng-click="addToCart('${product.productId}')"> 
 								<span class="glyphicon-shopping-cart glyphicon"></span> <spring:message code="product.orderNow"/>
+							</a>
+							<a href="<spring:url value="/cart"/>" class="btn btn-default">
+								<span class="glyphicon-hand-right glyphicon"></span> View Cart 
 							</a>
 						</p>
 					</div>
@@ -63,6 +68,9 @@
 			</div>
 		</div>
 	</section>
+	
+	<script src="/js/controllers.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
 </body>
 
 </html>
