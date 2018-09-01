@@ -17,4 +17,8 @@ public interface CartService {
 
 	void removeItem(String cartId, String productId);
 
+	Cart validate(String cartId);
+
+	void clearCart(String cartId);
+
 }

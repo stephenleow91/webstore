@@ -9,28 +9,27 @@ public class Customer implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private String customerId;
+	private Long customerId;
 	private String name;
-	private String address;
-	private long noOfOrdersMade;
+	private Address billingAddress;
+	private String phoneNumber;
 
 	public Customer() {
 		super();
+		this.billingAddress = new Address();
 	}
 
-	public Customer(String customerId, String name, String address, long noOfOrdersMade) {
-		super();
+	public Customer(Long customerId, String name) {
+		this();
 		this.customerId = customerId;
 		this.name = name;
-		this.address = address;
-		this.noOfOrdersMade = noOfOrdersMade;
 	}
 
-	public String getCustomerId() {
+	public Long getCustomerId() {
 		return customerId;
 	}
 
-	public void setCustomerId(String customerId) {
+	public void setCustomerId(long customerId) {
 		this.customerId = customerId;
 	}
 
@@ -42,20 +41,24 @@ public class Customer implements Serializable {
 		this.name = name;
 	}
 
-	public String getAddress() {
-		return address;
+	public Address getBillingAddress() {
+		return billingAddress;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setBillingAddress(Address billingAddress) {
+		this.billingAddress = billingAddress;
 	}
 
-	public long getNoOfOrdersMade() {
-		return noOfOrdersMade;
+	public String getPhoneNumber() {
+		return phoneNumber;
 	}
 
-	public void setNoOfOrdersMade(long noOfOrdersMade) {
-		this.noOfOrdersMade = noOfOrdersMade;
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	@Override
