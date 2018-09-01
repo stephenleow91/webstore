@@ -25,9 +25,9 @@ cartApp.controller('cartCtrl', function($scope, $http){
 	};
 	
 	$scope.removeFromCart = function(productId){
-		$http.put('/webstore/rest/cart/remove/' + productId).success(function(data)){
+		$http.put('/webstore/rest/cart/remove/' + productId).success(function(data){
 			$scope.refreshCart($scope.cartId);
-		};
+		});
 	};
 	
 });

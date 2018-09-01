@@ -77,7 +77,7 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
 
 		registry.addResourceHandler("/img/**").addResourceLocations("/resources/images/");
 		registry.addResourceHandler("/pdf/**").addResourceLocations("/resources/pdf/");
-		registry.addResourceHandler("/js/**").addResourceLocations("/resources/js/");
+		// registry.addResourceHandler("/js/**").addResourceLocations("/resources/js/");
 	}
 
 	// for Matrix variable
@@ -94,7 +94,7 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
 	public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
 		logger.info("configureDefaultServletHandling");
 
-		configurer.enable("ErrorHandlingServlet");
+		// configurer.enable("ErrorHandlingServlet");
 	}
 
 	@Bean
