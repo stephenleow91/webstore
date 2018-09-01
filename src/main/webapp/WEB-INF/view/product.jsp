@@ -70,7 +70,7 @@
 	</section>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
-	<script src="/webstore/resources/js/controllers.js"></script>
+	<script src="/webstore/js/controllers.js"></script>
 </body>
 
 </html>

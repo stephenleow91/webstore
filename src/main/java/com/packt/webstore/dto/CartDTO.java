@@ -1,6 +1,7 @@
 package com.packt.webstore.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CartDTO implements Serializable {
@@ -15,11 +16,13 @@ public class CartDTO implements Serializable {
 
 	public CartDTO() {
 		super();
+		cartItems = new ArrayList<>();
 	}
 
 	public CartDTO(String id) {
 		super();
 		this.id = id;
+		cartItems = new ArrayList<>();
 	}
 
 	public String getId() {
