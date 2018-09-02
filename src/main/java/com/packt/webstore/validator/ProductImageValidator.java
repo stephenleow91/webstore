@@ -25,7 +25,7 @@ public class ProductImageValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		Product product = (Product) target;
 
-		if (allowedSize.compareTo(product.getProductImage().getSize()) < 0) {
+		if (product.getProductImage() != null && allowedSize.compareTo(product.getProductImage().getSize()) < 0) {
 			errors.rejectValue("productImage", "com.packt.webstore.validator.ProductImageValidator.message");
 		}
 	}
