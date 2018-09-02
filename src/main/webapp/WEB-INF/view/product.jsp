@@ -33,7 +33,7 @@
 			<div class="col-md-4">
 				<img src="<c:url value="/img/${product.productId}.jpg"/>" alt="image" style="width:300px; height:350px"/>
 			</div>
-			<div class="col-sm-6 col-md-3" style="padding-bottom: 15px">
+			<div class="col-sm-6 col-md-4" style="padding-bottom: 15px">
 				<div class="thumbnail">
 					<div class="caption">
 						<h3>${product.name}</h3>
