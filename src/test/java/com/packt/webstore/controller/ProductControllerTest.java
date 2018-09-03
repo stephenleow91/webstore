@@ -49,8 +49,8 @@ public class ProductControllerTest {
 
 		// Act & Assert
 		this.mockMvc.perform(get("/market/product").param("id", "P1234"))
-			.andExpect(model().attributeExists("product"))
-			.andExpect(model().attribute("product", product));
+			.andExpect(model().attribute("product", product))
+			.andExpect(model().attributeExists("product"));
 	}
 
 }

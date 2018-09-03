@@ -37,7 +37,8 @@ public class ProductValidatorTest {
 
 		// Assert
 		Assertions.assertEquals(3, bindException.getErrorCount());
-		Assertions.assertTrue(bindException.getLocalizedMessage().contains("Unit price is Invalid. It cannot be empty."));
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 999 " + bindException.getMessage());
+		Assertions.assertTrue(bindException.getLocalizedMessage().contains("Category Invalid. It cannot be empty."));
 
 	}
 
@@ -53,6 +54,7 @@ public class ProductValidatorTest {
 
 		// Assert
 		Assertions.assertEquals(1, bindException.getErrorCount());
+		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 666 " + bindException.getMessage());
 		Assertions.assertTrue(bindException.getLocalizedMessage().contains("A product already exists with this product id."));
 
 	}

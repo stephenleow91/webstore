@@ -183,8 +183,7 @@ public class ProductController {
 	}
 
 	@RequestMapping("/product")
-	public String getProductById(Model model, @RequestParam("id") String productId, HttpServletRequest request)
-			throws Exception {
+	public String getProductById(Model model, @RequestParam("id") String productId, HttpServletRequest request) {
 		logger.info("getProductById");
 
 		Product product = productService.getProductById(productId);
@@ -194,11 +193,17 @@ public class ProductController {
 		File productUserManual = new File(request.getSession().getServletContext().getRealPath("/") + "resources\\pdf\\"
 				+ product.getProductId() + ".pdf");
 
-		byte[] encodedProductImage = Base64.getEncoder().encode(FileUtils.readFileToByteArray(productImage));
-		product.setBase64ProductImage(new String(encodedProductImage, StandardCharsets.UTF_8));
+		try {
 
-		byte[] encodedProductUserManual = Base64.getEncoder().encode(FileUtils.readFileToByteArray(productUserManual));
-		product.setBase64ProductUserManual(new String(encodedProductUserManual, StandardCharsets.UTF_8));
+			byte[] encodedProductImage = Base64.getEncoder().encode(FileUtils.readFileToByteArray(productImage));
+			product.setBase64ProductImage(new String(encodedProductImage, StandardCharsets.UTF_8));
+
+			byte[] encodedProductUserManual = Base64.getEncoder().encode(FileUtils.readFileToByteArray(productUserManual));
+			product.setBase64ProductUserManual(new String(encodedProductUserManual, StandardCharsets.UTF_8));
+
+		} catch (Exception e) {
+			logger.error("Exception : " + e.getMessage(), e);
+		}
 
 		model.addAttribute("product", product);
 
